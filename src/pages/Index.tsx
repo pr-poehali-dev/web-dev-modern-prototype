@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -14,7 +14,7 @@ export default function Index() {
   
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
-  const sectionsRef = useRef<{ [key: string]: HTMLElement | null }>({});
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -25,28 +25,31 @@ export default function Index() {
   }, []);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setVisibleSections(prev => new Set(prev).add(entry.target.id));
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+      
+      const sections = document.querySelectorAll('[data-section]');
+      sections.forEach((section) => {
+        const rect = section.getBoundingClientRect();
+        if (rect.top < window.innerHeight * 0.75) {
+          setVisibleSections(prev => new Set(prev).add(section.id));
+        }
+      });
+    };
 
-    Object.values(sectionsRef.current).forEach(section => {
-      if (section) observer.observe(section);
-    });
-
-    return () => observer.disconnect();
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Form submitted:', formData);
     setFormData({ name: '', email: '', message: '' });
+  };
+
+  const scrollToSection = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const projects = [
@@ -99,8 +102,57 @@ export default function Index() {
 
   return (
     <div className="min-h-screen">
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled 
+          ? 'bg-background/80 backdrop-blur-lg border-b border-border shadow-lg' 
+          : 'bg-transparent'
+      }`}>
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between h-20">
+            <div className="flex items-center gap-2 cursor-pointer" onClick={() => scrollToSection('hero')}>
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                <Icon name="Code2" size={24} className="text-white" />
+              </div>
+              <span className="text-xl font-bold">DevPortfolio</span>
+            </div>
+
+            <nav className="hidden md:flex items-center gap-8">
+              <button 
+                onClick={() => scrollToSection('portfolio')}
+                className="text-foreground/80 hover:text-foreground transition-colors"
+              >
+                Портфолио
+              </button>
+              <button 
+                onClick={() => scrollToSection('skills')}
+                className="text-foreground/80 hover:text-foreground transition-colors"
+              >
+                Навыки
+              </button>
+              <button 
+                onClick={() => scrollToSection('contact')}
+                className="text-foreground/80 hover:text-foreground transition-colors"
+              >
+                Контакты
+              </button>
+              <Button size="sm" onClick={() => scrollToSection('contact')}>
+                Связаться
+              </Button>
+            </nav>
+
+            <Button 
+              size="icon" 
+              variant="ghost" 
+              className="md:hidden"
+            >
+              <Icon name="Menu" size={24} />
+            </Button>
+          </div>
+        </div>
+      </header>
+
       <section 
-        ref={(el) => sectionsRef.current['hero'] = el}
+        data-section
         id="hero"
         className="relative min-h-screen flex items-center justify-center overflow-hidden"
       >
@@ -131,7 +183,7 @@ export default function Index() {
               <Button 
                 size="lg" 
                 className="gap-2 group"
-                onClick={() => document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => scrollToSection('portfolio')}
               >
                 Портфолио
                 <Icon name="ArrowDown" className="group-hover:translate-y-1 transition-transform" size={20} />
@@ -140,7 +192,7 @@ export default function Index() {
                 size="lg" 
                 variant="outline"
                 className="gap-2"
-                onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => scrollToSection('contact')}
               >
                 <Icon name="Mail" size={20} />
                 Связаться
@@ -155,7 +207,7 @@ export default function Index() {
       </section>
 
       <section 
-        ref={(el) => sectionsRef.current['portfolio'] = el}
+        data-section
         id="portfolio" 
         className="py-24 px-4"
       >
@@ -211,7 +263,7 @@ export default function Index() {
       </section>
 
       <section 
-        ref={(el) => sectionsRef.current['skills'] = el}
+        data-section
         id="skills"
         className="py-24 px-4 bg-muted/30"
       >
@@ -249,7 +301,7 @@ export default function Index() {
                     }}
                   />
                   <div 
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-pulse"
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
                     style={{
                       transform: 'translateX(-100%)',
                       animation: visibleSections.has('skills') ? 'shimmer 2s infinite' : 'none',
@@ -264,7 +316,7 @@ export default function Index() {
       </section>
 
       <section 
-        ref={(el) => sectionsRef.current['contact'] = el}
+        data-section
         id="contact" 
         className="py-24 px-4"
       >
@@ -330,16 +382,16 @@ export default function Index() {
             </Card>
 
             <div className="flex justify-center gap-6 mt-12">
-              <Button variant="ghost" size="icon" className="rounded-full">
+              <Button variant="ghost" size="icon" className="rounded-full hover:bg-primary/20">
                 <Icon name="Github" size={24} />
               </Button>
-              <Button variant="ghost" size="icon" className="rounded-full">
+              <Button variant="ghost" size="icon" className="rounded-full hover:bg-primary/20">
                 <Icon name="Linkedin" size={24} />
               </Button>
-              <Button variant="ghost" size="icon" className="rounded-full">
+              <Button variant="ghost" size="icon" className="rounded-full hover:bg-primary/20">
                 <Icon name="Twitter" size={24} />
               </Button>
-              <Button variant="ghost" size="icon" className="rounded-full">
+              <Button variant="ghost" size="icon" className="rounded-full hover:bg-primary/20">
                 <Icon name="Mail" size={24} />
               </Button>
             </div>
@@ -347,11 +399,74 @@ export default function Index() {
         </div>
       </section>
 
-      <footer className="border-t py-12">
-        <div className="container mx-auto px-4">
-          <p className="text-center text-muted-foreground">
-            © 2024 Web Developer Portfolio. Создано с вниманием к деталям.
-          </p>
+      <footer className="border-t bg-card/50 backdrop-blur-sm">
+        <div className="container mx-auto px-4 py-12">
+          <div className="grid md:grid-cols-4 gap-8 mb-8">
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                  <Icon name="Code2" size={24} className="text-white" />
+                </div>
+                <span className="text-xl font-bold">DevPortfolio</span>
+              </div>
+              <p className="text-muted-foreground text-sm">
+                Профессиональная разработка веб-приложений с современными технологиями
+              </p>
+            </div>
+
+            <div>
+              <h3 className="font-semibold mb-4">Навигация</h3>
+              <div className="space-y-2">
+                <button onClick={() => scrollToSection('portfolio')} className="block text-muted-foreground hover:text-foreground transition-colors text-sm">
+                  Портфолио
+                </button>
+                <button onClick={() => scrollToSection('skills')} className="block text-muted-foreground hover:text-foreground transition-colors text-sm">
+                  Навыки
+                </button>
+                <button onClick={() => scrollToSection('contact')} className="block text-muted-foreground hover:text-foreground transition-colors text-sm">
+                  Контакты
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="font-semibold mb-4">Технологии</h3>
+              <div className="space-y-2 text-sm text-muted-foreground">
+                <p>React & Next.js</p>
+                <p>TypeScript</p>
+                <p>Node.js</p>
+                <p>PostgreSQL</p>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="font-semibold mb-4">Контакты</h3>
+              <div className="space-y-2 text-sm text-muted-foreground">
+                <p className="flex items-center gap-2">
+                  <Icon name="Mail" size={16} />
+                  contact@devportfolio.com
+                </p>
+                <p className="flex items-center gap-2">
+                  <Icon name="MapPin" size={16} />
+                  Москва, Россия
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="border-t pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-muted-foreground text-sm">
+              © 2024 DevPortfolio. Все права защищены.
+            </p>
+            <div className="flex gap-6">
+              <a href="#" className="text-muted-foreground hover:text-foreground transition-colors text-sm">
+                Политика конфиденциальности
+              </a>
+              <a href="#" className="text-muted-foreground hover:text-foreground transition-colors text-sm">
+                Условия использования
+              </a>
+            </div>
+          </div>
         </div>
       </footer>
     </div>
