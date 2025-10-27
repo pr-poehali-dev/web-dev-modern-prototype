@@ -224,19 +224,16 @@ export default function Index() {
           </div>
 
           <div className="mt-8 pt-8 border-t border-border">
-            <p className="text-sm text-muted-foreground mb-4">Социальные сети</p>
-            <div className="grid grid-cols-4 gap-2">
-              <Button variant="outline" size="icon" className="rounded-full">
-                <Icon name="Github" size={20} />
+            <p className="text-sm text-muted-foreground mb-4">Связь со мной</p>
+            <div className="grid grid-cols-3 gap-2">
+              <Button variant="outline" size="icon" className="rounded-full hover:bg-primary/20">
+                <Icon name="MessageCircle" size={20} />
               </Button>
-              <Button variant="outline" size="icon" className="rounded-full">
-                <Icon name="Linkedin" size={20} />
+              <Button variant="outline" size="icon" className="rounded-full hover:bg-primary/20">
+                <Icon name="Phone" size={20} />
               </Button>
-              <Button variant="outline" size="icon" className="rounded-full">
-                <Icon name="Twitter" size={20} />
-              </Button>
-              <Button variant="outline" size="icon" className="rounded-full">
-                <Icon name="Mail" size={20} />
+              <Button variant="outline" size="icon" className="rounded-full hover:bg-primary/20">
+                <Icon name="Share2" size={20} />
               </Button>
             </div>
           </div>
@@ -275,31 +272,44 @@ export default function Index() {
         />
         
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto text-center animate-fade-in">
-            <h1 className="text-6xl md:text-8xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
-              Web Developer
-            </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground mb-8 font-light">
-              Создаю современные веб-приложения с фокусом на производительность и UX
-            </p>
-            <div className="flex gap-4 justify-center items-center flex-wrap">
-              <Button 
-                size="lg" 
-                className="gap-2 group"
-                onClick={() => scrollToSection('portfolio')}
-              >
-                Портфолио
-                <Icon name="ArrowDown" className="group-hover:translate-y-1 transition-transform" size={20} />
-              </Button>
-              <Button 
-                size="lg" 
-                variant="outline"
-                className="gap-2"
-                onClick={() => scrollToSection('contact')}
-              >
-                <Icon name="Mail" size={20} />
-                Связаться
-              </Button>
+          <div className="grid lg:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
+            <div className="animate-fade-in text-center lg:text-left">
+              <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
+                Web Developer
+              </h1>
+              <p className="text-lg md:text-xl text-muted-foreground mb-8 font-light">
+                Создаю современные веб-приложения с фокусом на производительность и UX
+              </p>
+              <div className="flex gap-4 justify-center lg:justify-start items-center flex-wrap">
+                <Button 
+                  size="lg" 
+                  className="gap-2 group"
+                  onClick={() => scrollToSection('portfolio')}
+                >
+                  Портфолио
+                  <Icon name="ArrowDown" className="group-hover:translate-y-1 transition-transform" size={20} />
+                </Button>
+                <Button 
+                  size="lg" 
+                  variant="outline"
+                  className="gap-2"
+                  onClick={() => scrollToSection('contact')}
+                >
+                  <Icon name="Mail" size={20} />
+                  Связаться
+                </Button>
+              </div>
+            </div>
+
+            <div className="animate-slide-up hidden lg:block">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-3xl blur-3xl" />
+                <img 
+                  src="https://cdn.poehali.dev/projects/4f15433f-f80b-4f9f-bb76-e5aae8985d28/files/2bb0df4d-006f-4b91-bccb-0e86f91f131c.jpg"
+                  alt="Web Developer"
+                  className="relative rounded-3xl shadow-2xl w-full h-auto object-cover"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -485,17 +495,20 @@ export default function Index() {
             </Card>
 
             <div className="flex justify-center gap-6 mt-12">
-              <Button variant="ghost" size="icon" className="rounded-full hover:bg-primary/20">
-                <Icon name="Github" size={24} />
+              <Button variant="ghost" size="icon" className="rounded-full hover:bg-primary/20" asChild>
+                <a href="https://t.me/" target="_blank" rel="noopener noreferrer">
+                  <Icon name="MessageCircle" size={24} />
+                </a>
               </Button>
-              <Button variant="ghost" size="icon" className="rounded-full hover:bg-primary/20">
-                <Icon name="Linkedin" size={24} />
+              <Button variant="ghost" size="icon" className="rounded-full hover:bg-primary/20" asChild>
+                <a href="https://wa.me/" target="_blank" rel="noopener noreferrer">
+                  <Icon name="Phone" size={24} />
+                </a>
               </Button>
-              <Button variant="ghost" size="icon" className="rounded-full hover:bg-primary/20">
-                <Icon name="Twitter" size={24} />
-              </Button>
-              <Button variant="ghost" size="icon" className="rounded-full hover:bg-primary/20">
-                <Icon name="Mail" size={24} />
+              <Button variant="ghost" size="icon" className="rounded-full hover:bg-primary/20" asChild>
+                <a href="https://vk.com/" target="_blank" rel="noopener noreferrer">
+                  <Icon name="Share2" size={24} />
+                </a>
               </Button>
             </div>
           </div>
