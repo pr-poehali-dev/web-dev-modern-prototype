@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -11,6 +11,37 @@ export default function Index() {
     email: '',
     message: ''
   });
+  
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
+  const sectionsRef = useRef<{ [key: string]: HTMLElement | null }>({});
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisibleSections(prev => new Set(prev).add(entry.target.id));
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    Object.values(sectionsRef.current).forEach(section => {
+      if (section) observer.observe(section);
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -68,12 +99,23 @@ export default function Index() {
 
   return (
     <div className="min-h-screen">
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <section 
+        ref={(el) => sectionsRef.current['hero'] = el}
+        id="hero"
+        className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      >
         <div 
           className="absolute inset-0 opacity-20 animate-gradient"
           style={{
             background: 'linear-gradient(45deg, hsl(var(--primary)), hsl(var(--secondary)), hsl(var(--primary)))',
             backgroundSize: '400% 400%'
+          }}
+        />
+        
+        <div 
+          className="absolute inset-0 opacity-30 pointer-events-none"
+          style={{
+            background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, hsl(var(--primary) / 0.15), transparent 40%)`
           }}
         />
         
@@ -112,7 +154,11 @@ export default function Index() {
         </div>
       </section>
 
-      <section id="portfolio" className="py-24 px-4">
+      <section 
+        ref={(el) => sectionsRef.current['portfolio'] = el}
+        id="portfolio" 
+        className="py-24 px-4"
+      >
         <div className="container mx-auto">
           <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">Портфолио</h2>
           <p className="text-center text-muted-foreground mb-16 max-w-2xl mx-auto">
@@ -123,8 +169,14 @@ export default function Index() {
             {projects.map((project, index) => (
               <Card 
                 key={index}
-                className="overflow-hidden group hover:scale-105 transition-all duration-300 hover:shadow-2xl cursor-pointer animate-slide-up"
-                style={{ animationDelay: `${index * 0.1}s` }}
+                className={`overflow-hidden group hover:scale-105 transition-all duration-500 hover:shadow-2xl cursor-pointer ${
+                  visibleSections.has('portfolio') 
+                    ? 'opacity-100 translate-y-0' 
+                    : 'opacity-0 translate-y-20'
+                }`}
+                style={{ 
+                  transitionDelay: visibleSections.has('portfolio') ? `${index * 0.1}s` : '0s'
+                }}
               >
                 <div className="relative h-48 overflow-hidden">
                   <img 
@@ -158,7 +210,11 @@ export default function Index() {
         </div>
       </section>
 
-      <section className="py-24 px-4 bg-muted/30">
+      <section 
+        ref={(el) => sectionsRef.current['skills'] = el}
+        id="skills"
+        className="py-24 px-4 bg-muted/30"
+      >
         <div className="container mx-auto">
           <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">Навыки</h2>
           <p className="text-center text-muted-foreground mb-16 max-w-2xl mx-auto">
@@ -169,8 +225,12 @@ export default function Index() {
             {skills.map((skill, index) => (
               <div 
                 key={index}
-                className="animate-fade-in"
-                style={{ animationDelay: `${index * 0.1}s` }}
+                className={`transition-all duration-700 ${
+                  visibleSections.has('skills')
+                    ? 'opacity-100 translate-x-0'
+                    : 'opacity-0 -translate-x-10'
+                }`}
+                style={{ transitionDelay: visibleSections.has('skills') ? `${index * 0.1}s` : '0s' }}
               >
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-3">
@@ -180,12 +240,20 @@ export default function Index() {
                   <span className="text-muted-foreground font-semibold">{skill.level}%</span>
                 </div>
                 
-                <div className="h-3 bg-muted rounded-full overflow-hidden">
+                <div className="h-3 bg-muted rounded-full overflow-hidden relative">
                   <div 
-                    className="h-full bg-gradient-to-r from-primary to-secondary rounded-full transition-all duration-1000 ease-out"
+                    className="h-full bg-gradient-to-r from-primary to-secondary rounded-full transition-all duration-1500 ease-out"
                     style={{ 
-                      width: `${skill.level}%`,
-                      animationDelay: `${index * 0.1}s`
+                      width: visibleSections.has('skills') ? `${skill.level}%` : '0%',
+                      transitionDelay: visibleSections.has('skills') ? `${index * 0.15 + 0.3}s` : '0s'
+                    }}
+                  />
+                  <div 
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-pulse"
+                    style={{
+                      transform: 'translateX(-100%)',
+                      animation: visibleSections.has('skills') ? 'shimmer 2s infinite' : 'none',
+                      animationDelay: `${index * 0.2}s`
                     }}
                   />
                 </div>
@@ -195,7 +263,11 @@ export default function Index() {
         </div>
       </section>
 
-      <section id="contact" className="py-24 px-4">
+      <section 
+        ref={(el) => sectionsRef.current['contact'] = el}
+        id="contact" 
+        className="py-24 px-4"
+      >
         <div className="container mx-auto">
           <div className="max-w-2xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">Связаться</h2>
@@ -203,7 +275,11 @@ export default function Index() {
               Готов обсудить ваш проект. Напишите мне, и я отвечу в ближайшее время
             </p>
             
-            <Card className="p-8">
+            <Card className={`p-8 transition-all duration-700 ${
+              visibleSections.has('contact')
+                ? 'opacity-100 scale-100'
+                : 'opacity-0 scale-95'
+            }`}>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium mb-2">
