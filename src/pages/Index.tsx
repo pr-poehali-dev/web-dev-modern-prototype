@@ -67,50 +67,50 @@ export default function Index() {
 
   const projects = [
     {
-      title: 'AI-платформа для бизнеса',
-      description: 'Интеллектуальная система автоматизации бизнес-процессов с машинным обучением',
-      tech: ['Next.js', 'OpenAI', 'Python', 'TensorFlow'],
+      title: 'E-Commerce Platform',
+      description: 'Современная платформа электронной коммерции с интеграцией платежей и системой управления заказами',
+      tech: ['React', 'Node.js', 'PostgreSQL', 'Stripe'],
       image: 'https://cdn.poehali.dev/projects/4f15433f-f80b-4f9f-bb76-e5aae8985d28/files/d0d50093-f12b-4bcf-a27e-30ea0887070e.jpg'
     },
     {
-      title: 'Цифровой финтех',
-      description: 'Передовое финансовое приложение с блокчейном и криптовалютными транзакциями',
-      tech: ['React', 'Blockchain', 'Web3', 'Solidity'],
+      title: 'Social Network',
+      description: 'Социальная сеть с real-time чатом, лентой новостей и системой уведомлений',
+      tech: ['React', 'WebSocket', 'Redis', 'MongoDB'],
       image: 'https://cdn.poehali.dev/projects/4f15433f-f80b-4f9f-bb76-e5aae8985d28/files/d0d50093-f12b-4bcf-a27e-30ea0887070e.jpg'
     },
     {
-      title: 'IoT экосистема',
-      description: 'Платформа управления умными устройствами с real-time аналитикой данных',
-      tech: ['TypeScript', 'MQTT', 'InfluxDB', 'Grafana'],
+      title: 'Analytics Dashboard',
+      description: 'Интерактивная панель аналитики с визуализацией данных и отчётами',
+      tech: ['TypeScript', 'D3.js', 'Express', 'PostgreSQL'],
       image: 'https://cdn.poehali.dev/projects/4f15433f-f80b-4f9f-bb76-e5aae8985d28/files/d0d50093-f12b-4bcf-a27e-30ea0887070e.jpg'
     },
     {
-      title: 'Метаверс платформа',
-      description: '3D-пространство для виртуальных мероприятий с VR/AR интеграцией',
-      tech: ['Three.js', 'WebGL', 'WebXR', 'Unity'],
+      title: 'Mobile Banking App',
+      description: 'Мобильное приложение банка с биометрией и мгновенными переводами',
+      tech: ['React Native', 'Firebase', 'Node.js'],
       image: 'https://cdn.poehali.dev/projects/4f15433f-f80b-4f9f-bb76-e5aae8985d28/files/d0d50093-f12b-4bcf-a27e-30ea0887070e.jpg'
     },
     {
-      title: 'Квантовые вычисления',
-      description: 'Облачная платформа для квантовых вычислений и симуляций',
-      tech: ['Python', 'Qiskit', 'FastAPI', 'Kubernetes'],
+      title: 'AI Content Generator',
+      description: 'Платформа для генерации контента на базе AI с персонализацией',
+      tech: ['Next.js', 'OpenAI API', 'Python', 'FastAPI'],
       image: 'https://cdn.poehali.dev/projects/4f15433f-f80b-4f9f-bb76-e5aae8985d28/files/d0d50093-f12b-4bcf-a27e-30ea0887070e.jpg'
     },
     {
-      title: 'Нейросетевой ассистент',
-      description: 'AI-ассистент с натуральным языком и голосовым управлением',
-      tech: ['React', 'GPT-4', 'Whisper', 'Azure'],
+      title: 'Video Streaming Service',
+      description: 'Стриминговый сервис с адаптивным качеством и системой рекомендаций',
+      tech: ['React', 'AWS', 'GraphQL', 'CDN'],
       image: 'https://cdn.poehali.dev/projects/4f15433f-f80b-4f9f-bb76-e5aae8985d28/files/d0d50093-f12b-4bcf-a27e-30ea0887070e.jpg'
     }
   ];
 
   const skills = [
-    { name: 'AI & Machine Learning', level: 95, icon: 'Brain' },
-    { name: 'Современные фреймворки', level: 93, icon: 'Code2' },
-    { name: 'Облачные технологии', level: 90, icon: 'Cloud' },
-    { name: 'Web3 & Blockchain', level: 87, icon: 'Link' },
-    { name: '3D & WebGL', level: 85, icon: 'Box' },
-    { name: 'DevOps & CI/CD', level: 88, icon: 'Workflow' }
+    { name: 'React & Next.js', level: 95, icon: 'Code2' },
+    { name: 'TypeScript', level: 90, icon: 'FileCode2' },
+    { name: 'Node.js & Express', level: 88, icon: 'Server' },
+    { name: 'PostgreSQL & MongoDB', level: 85, icon: 'Database' },
+    { name: 'UI/UX Design', level: 80, icon: 'Palette' },
+    { name: 'DevOps & AWS', level: 75, icon: 'Cloud' }
   ];
 
   return (
@@ -224,16 +224,19 @@ export default function Index() {
           </div>
 
           <div className="mt-8 pt-8 border-t border-border">
-            <p className="text-sm text-muted-foreground mb-4">Связь со мной</p>
-            <div className="grid grid-cols-3 gap-2">
-              <Button variant="outline" size="icon" className="rounded-full hover:bg-primary/20">
-                <Icon name="MessageCircle" size={20} />
+            <p className="text-sm text-muted-foreground mb-4">Социальные сети</p>
+            <div className="grid grid-cols-4 gap-2">
+              <Button variant="outline" size="icon" className="rounded-full">
+                <Icon name="Github" size={20} />
               </Button>
-              <Button variant="outline" size="icon" className="rounded-full hover:bg-primary/20">
-                <Icon name="Phone" size={20} />
+              <Button variant="outline" size="icon" className="rounded-full">
+                <Icon name="Linkedin" size={20} />
               </Button>
-              <Button variant="outline" size="icon" className="rounded-full hover:bg-primary/20">
-                <Icon name="Share2" size={20} />
+              <Button variant="outline" size="icon" className="rounded-full">
+                <Icon name="Twitter" size={20} />
+              </Button>
+              <Button variant="outline" size="icon" className="rounded-full">
+                <Icon name="Mail" size={20} />
               </Button>
             </div>
           </div>
@@ -272,53 +275,31 @@ export default function Index() {
         />
         
         <div className="container mx-auto px-4 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
-            <div className="animate-fade-in text-center lg:text-left">
-              <div className="inline-block mb-4 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full">
-                <span className="text-sm font-medium text-primary">Новое поколение веб-разработки</span>
-              </div>
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary leading-tight">
-                Создание современных сайтов
-              </h1>
-              <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6">
-                и веб-приложений под ключ
-              </h2>
-              <div className="mb-6 p-4 bg-muted/50 rounded-lg border-l-4 border-primary">
-                <p className="text-lg font-semibold mb-2">🚀 Инновации и результат в каждом проекте</p>
-              </div>
-              <p className="text-base md:text-lg text-muted-foreground mb-8 font-light leading-relaxed">
-                Превращаем смелые идеи в передовые цифровые решения. Используем AI, современные технологии и инновационные подходы для создания веб-приложений будущего.
-              </p>
-              <div className="flex gap-4 justify-center lg:justify-start items-center flex-wrap">
-                <Button 
-                  size="lg" 
-                  className="gap-2 group"
-                  onClick={() => scrollToSection('portfolio')}
-                >
-                  Наши проекты
-                  <Icon name="Sparkles" className="group-hover:rotate-12 transition-transform" size={20} />
-                </Button>
-                <Button 
-                  size="lg" 
-                  variant="outline"
-                  className="gap-2"
-                  onClick={() => scrollToSection('contact')}
-                >
-                  <Icon name="Mail" size={20} />
-                  Связаться
-                </Button>
-              </div>
-            </div>
-
-            <div className="animate-slide-up hidden lg:block">
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-3xl blur-3xl" />
-                <img 
-                  src="https://cdn.poehali.dev/projects/4f15433f-f80b-4f9f-bb76-e5aae8985d28/files/8e17f5d5-5246-4a77-9650-ab0b15a57dac.jpg"
-                  alt="Современная веб-разработка"
-                  className="relative rounded-3xl shadow-2xl w-full h-auto object-cover"
-                />
-              </div>
+          <div className="max-w-4xl mx-auto text-center animate-fade-in">
+            <h1 className="text-6xl md:text-8xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
+              Web Developer
+            </h1>
+            <p className="text-xl md:text-2xl text-muted-foreground mb-8 font-light">
+              Создаю современные веб-приложения с фокусом на производительность и UX
+            </p>
+            <div className="flex gap-4 justify-center items-center flex-wrap">
+              <Button 
+                size="lg" 
+                className="gap-2 group"
+                onClick={() => scrollToSection('portfolio')}
+              >
+                Портфолио
+                <Icon name="ArrowDown" className="group-hover:translate-y-1 transition-transform" size={20} />
+              </Button>
+              <Button 
+                size="lg" 
+                variant="outline"
+                className="gap-2"
+                onClick={() => scrollToSection('contact')}
+              >
+                <Icon name="Mail" size={20} />
+                Связаться
+              </Button>
             </div>
           </div>
         </div>
@@ -334,9 +315,9 @@ export default function Index() {
         className="py-24 px-4"
       >
         <div className="container mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">Передовые проекты</h2>
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">Портфолио</h2>
           <p className="text-center text-muted-foreground mb-16 max-w-2xl mx-auto">
-            Реализованные решения с использованием AI, блокчейна и передовых технологий
+            Избранные проекты, демонстрирующие опыт работы с современными технологиями
           </p>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -390,9 +371,9 @@ export default function Index() {
         className="py-24 px-4 bg-muted/30"
       >
         <div className="container mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">Технологии будущего</h2>
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">Навыки</h2>
           <p className="text-center text-muted-foreground mb-16 max-w-2xl mx-auto">
-            Экспертиза в современных технологиях и инновационных подходах
+            Технологический стек и экспертиза в разработке
           </p>
           
           <div className="max-w-3xl mx-auto space-y-8">
@@ -444,9 +425,9 @@ export default function Index() {
       >
         <div className="container mx-auto">
           <div className="max-w-2xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">Начнём сотрудничество</h2>
+            <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">Связаться</h2>
             <p className="text-center text-muted-foreground mb-12">
-              Готовы воплотить вашу идею в цифровую реальность? Свяжитесь с нами для обсуждения проекта
+              Готов обсудить ваш проект. Напишите мне, и я отвечу в ближайшее время
             </p>
             
             <Card className={`p-8 transition-all duration-700 ${
@@ -504,20 +485,17 @@ export default function Index() {
             </Card>
 
             <div className="flex justify-center gap-6 mt-12">
-              <Button variant="ghost" size="icon" className="rounded-full hover:bg-primary/20" asChild>
-                <a href="https://t.me/" target="_blank" rel="noopener noreferrer">
-                  <Icon name="MessageCircle" size={24} />
-                </a>
+              <Button variant="ghost" size="icon" className="rounded-full hover:bg-primary/20">
+                <Icon name="Github" size={24} />
               </Button>
-              <Button variant="ghost" size="icon" className="rounded-full hover:bg-primary/20" asChild>
-                <a href="https://wa.me/" target="_blank" rel="noopener noreferrer">
-                  <Icon name="Phone" size={24} />
-                </a>
+              <Button variant="ghost" size="icon" className="rounded-full hover:bg-primary/20">
+                <Icon name="Linkedin" size={24} />
               </Button>
-              <Button variant="ghost" size="icon" className="rounded-full hover:bg-primary/20" asChild>
-                <a href="https://vk.com/" target="_blank" rel="noopener noreferrer">
-                  <Icon name="Share2" size={24} />
-                </a>
+              <Button variant="ghost" size="icon" className="rounded-full hover:bg-primary/20">
+                <Icon name="Twitter" size={24} />
+              </Button>
+              <Button variant="ghost" size="icon" className="rounded-full hover:bg-primary/20">
+                <Icon name="Mail" size={24} />
               </Button>
             </div>
           </div>
