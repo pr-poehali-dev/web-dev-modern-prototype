@@ -15,6 +15,7 @@ export default function Index() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
   const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -50,7 +51,19 @@ export default function Index() {
 
   const scrollToSection = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    setMobileMenuOpen(false);
   };
+
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [mobileMenuOpen]);
 
   const projects = [
     {
@@ -144,12 +157,102 @@ export default function Index() {
               size="icon" 
               variant="ghost" 
               className="md:hidden"
+              onClick={() => setMobileMenuOpen(true)}
             >
               <Icon name="Menu" size={24} />
             </Button>
           </div>
         </div>
       </header>
+
+      <div 
+        className={`fixed inset-0 bg-black/50 backdrop-blur-sm z-50 transition-opacity duration-300 md:hidden ${
+          mobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={() => setMobileMenuOpen(false)}
+      />
+
+      <div className={`fixed top-0 right-0 bottom-0 w-80 bg-card border-l border-border z-50 transform transition-transform duration-300 ease-out md:hidden ${
+        mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+      }`}>
+        <div className="flex items-center justify-between p-6 border-b border-border">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+              <Icon name="Code2" size={20} className="text-white" />
+            </div>
+            <span className="text-lg font-bold">Меню</span>
+          </div>
+          <Button 
+            size="icon" 
+            variant="ghost"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <Icon name="X" size={24} />
+          </Button>
+        </div>
+
+        <nav className="p-6">
+          <div className="space-y-1">
+            <button
+              onClick={() => scrollToSection('hero')}
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-muted transition-colors text-left"
+            >
+              <Icon name="Home" size={20} className="text-primary" />
+              <span>Главная</span>
+            </button>
+            <button
+              onClick={() => scrollToSection('portfolio')}
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-muted transition-colors text-left"
+            >
+              <Icon name="Briefcase" size={20} className="text-primary" />
+              <span>Портфолио</span>
+            </button>
+            <button
+              onClick={() => scrollToSection('skills')}
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-muted transition-colors text-left"
+            >
+              <Icon name="Code" size={20} className="text-primary" />
+              <span>Навыки</span>
+            </button>
+            <button
+              onClick={() => scrollToSection('contact')}
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-muted transition-colors text-left"
+            >
+              <Icon name="Mail" size={20} className="text-primary" />
+              <span>Контакты</span>
+            </button>
+          </div>
+
+          <div className="mt-8 pt-8 border-t border-border">
+            <p className="text-sm text-muted-foreground mb-4">Социальные сети</p>
+            <div className="grid grid-cols-4 gap-2">
+              <Button variant="outline" size="icon" className="rounded-full">
+                <Icon name="Github" size={20} />
+              </Button>
+              <Button variant="outline" size="icon" className="rounded-full">
+                <Icon name="Linkedin" size={20} />
+              </Button>
+              <Button variant="outline" size="icon" className="rounded-full">
+                <Icon name="Twitter" size={20} />
+              </Button>
+              <Button variant="outline" size="icon" className="rounded-full">
+                <Icon name="Mail" size={20} />
+              </Button>
+            </div>
+          </div>
+
+          <div className="mt-8">
+            <Button 
+              className="w-full gap-2"
+              size="lg"
+              onClick={() => scrollToSection('contact')}
+            >
+              <Icon name="Send" size={20} />
+              Связаться со мной
+            </Button>
+          </div>
+        </nav>
+      </div>
 
       <section 
         data-section
